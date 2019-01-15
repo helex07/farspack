@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Elena Alexandrova" />
+
+<meta name="date" content="2019-01-01" />
+
+<title>The use of farspack package</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">The use of farspack package</h1>
+<h4 class="author"><em>Elena Alexandrova</em></h4>
+<h4 class="date"><em>2019-01-01</em></h4>
+
+
+
+<div id="general-information" class="section level1">
+<h1>General information</h1>
+<p>This package is a project required by Coursera’s Building R Packages course. The code for functions and data file included in this package were provided by the course.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(farspack)</code></pre></div>
+<div id="the-purpose-of-package" class="section level2">
+<h2>The purpose of package</h2>
+<p>The package contains five functions for processing Fatality Analysis Reporting System (FARS) files from National Highway Traffic System Administration (<a href="https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars" class="uri">https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars</a>). The outcome of package are summaries and plots of traffic accidents for each state in USA.</p>
+<div id="set-root-directory-for-knitr" class="section level3">
+<h3>Set root directory for knitr</h3>
+<p>The package contains original data set included for showing example of loading and analyzing raw data. The package knitr requires to set a root directory in order to access the included dataset and knit vignette to html.</p>
+</div>
+<div id="give-a-name-to-data-file" class="section level3">
+<h3>Give a name to data file</h3>
+<p>The function creates a file name for the specific year and prints it.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filename &lt;-<span class="st"> </span><span class="kw">make_filename</span>(<span class="dv">2013</span>)</code></pre></div>
+</div>
+<div id="read-.csv-file" class="section level3">
+<h3>Read .csv file</h3>
+<p>The function loads US FARS data and turns a flat file into the data frame.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">subset_<span class="dv">2013</span> &lt;-<span class="st"> </span><span class="kw">fars_read</span>(filename)</code></pre></div>
+</div>
+<div id="create-a-file-for-the-specific-date" class="section level3">
+<h3>Create a file for the specific date</h3>
+<p>The function creates a subset that contains the accidents for given years sorted by month.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">all_years &lt;-<span class="st"> </span><span class="kw">fars_read_years</span>(<span class="dt">years =</span> <span class="kw">list</span>(<span class="dv">2013</span>,<span class="dv">2014</span>,<span class="dv">2015</span>))</code></pre></div>
+</div>
+<div id="monthly-summary-of-accidents-for-years-of-interest" class="section level3">
+<h3>Monthly summary of accidents for years of interest</h3>
+<p>The function is summarising the number of accidents per month for each particular year.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">all_res &lt;-<span class="st"> </span><span class="kw">fars_summarize_years</span>( <span class="dt">years =</span> <span class="dv">2013</span><span class="op">:</span><span class="dv">2015</span>)</code></pre></div>
+</div>
+<div id="geo-map-with-location-of-incidents-for-specific-year" class="section level3">
+<h3>Geo map with location of incidents for specific year</h3>
+<p>The function builds a geographical map of the state with plotted traffic accidents. Each point represents a single case from the FARS data file for one specific year.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map &lt;-<span class="st"> </span><span class="kw">fars_map_state</span>(<span class="dv">10</span>,<span class="dv">2013</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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4Ti61HHtMltdpaFDh9pLL71ka6/d/P+fNPbTSPcrr37HH3+8CxVy4403uvhBeddwrLsI0AXrLn+13VoJxsYbb2zLly9vSVmtEh8Zc/7557twHRoT0lsygtm3xEVeM0GAvOIPs3DF5mmVALWyhtqeev78+S5YmrpjsnPy5Mn2uc99zq677rogbW5l/WPMCwGK0atN1knjQE899VSTubTn9rXWWsuuuOIKFzZWInnWWWe5FttFF13k5g/tt99+7SmYXNtCoPlOflvMIlOfBNohQMk8oFZ2ydZbbz03WVETFpW0hOPwww/3iY6y6yRAC6hOYL1weZkAJUKSx0Hnys7n3dPKYzvvvLOLJ6TA+qTuIIAABe6nVrYYqla1bAzIhz1V7V533XXtve99r/3hD3+oegvXeSaAAHl2QK3iH330UfvhD39or732Wq1LW3a+rAVUVojEqUigys6V5VnvuT322MN1xeq9j+v9EECA/HCvXOqIESNs3rx5psHXTqVGBahT9pWVs+eee9odd9xRdgnnAiLAIHRAzsgzZdWqVXbUUUflnWrbsWYESGNARa2gthncn3Ey9rRixQo79NBD7dVXX23JRMp22kzeZrSAAn8KJEAHHnhgR60sGwNq1JB2DFAnoqOdNJIuntaybbXVVnbfffc1air3dZAAAtRB2I0Utf7665u2q+lkaqYFlG79JALRLtuTsqZNm+ZmRqscHXvggQfohrULeovzRYBaDLTV2WkMqNNJZWqDwHqXOmRbOYlAyH59T/9uVZ30xuvvf/+766bOmTNnIFvGgQZQBP2FMaCg3WPmQ4CEJGkFjRkzpjKhdghMWeHqZu222272ne98xw466CDbeuutbfXq1W7l/A477FB2K+cCIUALKBBHFJnRybdfaRvaMQ6Uzr8V3ydOnGjXX3+9nXLKKW7c5/LLL7cFCxbY5ptvbgqsJjEihU0AAQrbP/biiy96sTBpAbWi8LKxoLJztcrWqv10V2vChAkufOs111xjjzzySN1dyFrlcb71BBCg1jNtaY6PPfaYzZw501auXNnSfGtl1koBKuualZ2rZaPCtC5cuNCOO+44d+n2229vmg2t/cXOPPNM1wqqlQfn/RJgDMgv/5qlb7PNNi5A2HbbbWda8a0QpZ1ItQRILReJR/JZZFOt80X3VTmubpa6XBonmz59uu21114uYFmV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" /><!-- --></p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

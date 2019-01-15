@@ -1,0 +1,65 @@
+---
+title: "The use of farspack package "
+author: "Elena Alexandrova"
+date: "2019-01-01"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# General information
+This package is a project required by Coursera's Building R Packages course. The code for functions and data file included in this package were provided by the course.
+
+```{r get_my_pack} 
+library(farspack)
+```
+
+## The purpose of package
+The package contains five functions for processing Fatality Analysis Reporting System (FARS) files from National Highway Traffic System Administration (https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars). The outcome of package are summaries and plots of traffic accidents for each state in USA.
+
+### Set root directory for knitr
+The package contains original data set included for showing example of loading and analyzing raw data. The package knitr requires to set a root directory in order to access the included dataset and knit vignette to html.
+
+```{r, setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "~/Desktop/R program spec/R prog Course 3/farspack/inst/extdata")
+```
+
+### Give a name to data file
+The function creates a file name for the specific year and prints it.
+
+```{r, name, echo = TRUE, eval = TRUE}
+filename <- make_filename(2013)
+```
+
+### Read .csv file
+The function loads US FARS data and turns a flat file into the data frame.
+
+```{r, year_read, echo = TRUE, eval = TRUE}
+subset_2013 <- fars_read(filename)
+```
+
+### Create a file for the specific date
+The function creates a subset that contains the accidents for given years sorted by month.
+
+```{r, years_read, echo = TRUE, eval = TRUE}
+all_years <- fars_read_years(years = list(2013,2014,2015))
+```
+
+### Monthly summary of accidents for years of interest
+The function is summarising  the number of accidents per month for each particular year.
+
+```{r, accidents_summary, echo = TRUE, eval = TRUE}
+all_res <- fars_summarize_years( years = 2013:2015)
+```
+
+### Geo map with location of incidents for specific year
+The function builds a geographical map of the state with plotted traffic accidents. Each point represents a single case from the FARS data file for one specific year.
+```{r, accidents_map, echo = TRUE, eval = TRUE, warning = FALSE}
+map <- fars_map_state(10,2013)
+```
+
+
+
+

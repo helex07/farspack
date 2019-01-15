@@ -1,0 +1,25 @@
+Package: farspack
+Type: Package
+Title: Analysis of FARS Data
+Version: 0.1.0
+Date: 2019-01-01
+Author: Elena Alexandrova
+Maintainer: Elena Alexandrova <helex07@gmail.com>
+Description: The package contains five functions for reading flat files, 
+ summarizing and visualizing occurance of traffic accidents 
+ for each state.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Imports: dplyr,
+         magrittr,
+         readr,
+         tidyr,
+         maps,
+         graphics,
+         rlang
+Suggests: rmarkdown,
+          knitr,
+          testthat
+VignetteBuilder: knitr
