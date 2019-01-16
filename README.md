@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/helex07/farspack.svg?branch=master)](https://travis-ci.com/helex07/farspack)
+
 # **farspack**
 The project for Coursera's Building R Packages course
 As assigned by course this package has to:
